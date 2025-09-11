@@ -37,15 +37,15 @@ You will be required to submit a link to your GitHub, as well as screenshots of 
 Please evaluate your system on the following questions:
 
 1. Explain the concept of object-oriented programming in simple terms to a complete beginner. 
-    - Aspect Tested:
+    - Aspect Tested: Is answer fairly accurate. I think the answer was  accurate althiugh a bit too wordy. Could have been more succint I think.
 2. Read the following paragraph and provide a concise summary of the key points…
-    - Aspect Tested:
+    - Aspect Tested: Does it contain an actual summary containing all the main points. Output was a good summary of the paragraph and no strange output.
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
-    - Aspect Tested:
+    - Aspect Tested: Looked for a story that is imaginative but also something that could be plausible. The output was imaginative and had interesting imagery.
 4. If a store sells apples in packs of 4 and oranges in packs of 3, how many packs of each do I need to buy to get exactly 12 apples and 9 oranges?
-    - Aspect Tested:
+    - Aspect Tested: I was looking for an accuracte answer as this was a mathematical question. Output had exactly the correct answer and how it arrived at the correct answer. 
 5. Rewrite the following paragraph in a professional, formal tone…
-    - Aspect Tested:
+    - Aspect Tested: Testing the tome of the output. The output was professional/ formal. 
 
 This "vibe check" now serves as a baseline, of sorts, to help understand what holes your application has.
 
@@ -58,7 +58,7 @@ This "vibe check" now serves as a baseline, of sorts, to help understand what ho
 #### ❓Question #1:
 
 What are some limitations of vibe checking as an evaluation tool?
-##### ✅ Answer:
+##### ✅ Answer: It is highly subjective as an answer that works/ doesn't work for me might not work/ work for someone else. Hard to scale as there could be a large number of inputs we want to test, but manually vibe checking all of them will be time consuming. Hard to do exhaustive testing since it is manual.
 
 ### 🚧 Advanced Build (OPTIONAL):
 
