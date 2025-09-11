@@ -37,7 +37,7 @@ You will be required to submit a link to your GitHub, as well as screenshots of 
 Please evaluate your system on the following questions:
 
 1. Explain the concept of object-oriented programming in simple terms to a complete beginner. 
-    - Aspect Tested: Is answer fairly accurate. I think the answer was  accurate althiugh a bit too wordy. Could have been more succint I think.
+    - Aspect Tested: Is answer fairly accurate. I think the answer was accurate although a bit too wordy. Could have been more succint I think.
 2. Read the following paragraph and provide a concise summary of the key points…
     - Aspect Tested: Does it contain an actual summary containing all the main points. Output was a good summary of the paragraph and no strange output.
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
@@ -68,14 +68,18 @@ Please make adjustments to your application that you believe will improve the vi
 
 #### 🏗️ Activity #1
 ##### Adjustments Made:
-- _describe adjustment(s) here_
+- Added an emotion dropdown to select the emotion with which the AI should respond. It has the option for neutral, happy, sad and angry. Prompts for these are
+happy: "Respond in a cheerful, upbeat, and positive manner. Use enthusiastic language and emojis when appropriate. Match the user's happy mood.",
+    sad: "Respond with sadness. Don't be too wordy. Could be a bit grumbly.",
+    angry: "Response could be a little bit harsh but not to the extent it would be indecent or hurt feelings. Talk like how a child would talk when it's angry.",
+    neutral: "Respond in a balanced, professional, and helpful manner."
 
 ##### Results:
-1. _Comment here how the change(s) impacted the vibe check of your system_
-2. 
-3. 
-4. 
-5.
+1. Selected sad emotion. Although it did use a few words to suggest it was sad, I didn't think the whole response was very sad. Its response was succinct and not wordy like it was in the previous response. Response still had an accurate explanation for what is OOP
+2. Selected happy emotion. Response had a celebratory feel to it and also included a few "happy" and "celebratory" emojis to them.
+3. Tried both angry and happy emotions for the story. Both were imaginative, though the happy emotion went better with the prompt. The angry output just included noises like `grrr` and `here is a your dumb story`.
+4. Used sad emotion. Accurate result, but way less wordy than before (according to the prompt set for this emotion)
+5. selected happy emotion: The emotion didn't seem to change the content all that much from earlier non-emotion prompt. The only way it sounded happy was through the use of emotions, so that may or may not have been professional. 
 
 
 ## Submitting Your Homework
