@@ -36,16 +36,16 @@ You will be required to submit a link to your GitHub, as well as screenshots of 
 
 Please evaluate your system on the following questions:
 
-1. Explain the concept of object-oriented programming in simple terms to a complete beginner. 
-    - Aspect Tested:
+Explain the concept of object-oriented programming in simple terms to a complete beginner. 
+    - Aspect Tested: Is answer fairly accurate. I think the answer was accurate although a bit too wordy. Could have been more succint I think.
 2. Read the following paragraph and provide a concise summary of the key points…
-    - Aspect Tested:
+    - Aspect Tested: Does it contain an actual summary containing all the main points. Output was a good summary of the paragraph and no strange output.
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
-    - Aspect Tested:
+    - Aspect Tested: Looked for a story that is imaginative but also something that could be plausible. The output was imaginative and had interesting imagery.
 4. If a store sells apples in packs of 4 and oranges in packs of 3, how many packs of each do I need to buy to get exactly 12 apples and 9 oranges?
-    - Aspect Tested:
+    - Aspect Tested: I was looking for an accuracte answer as this was a mathematical question. Output had exactly the correct answer and how it arrived at the correct answer. 
 5. Rewrite the following paragraph in a professional, formal tone…
-    - Aspect Tested:
+    - Aspect Tested: Testing the tone of the output. The output was professional/ formal.
 
 This "vibe check" now serves as a baseline, of sorts, to help understand what holes your application has.
 
@@ -58,7 +58,7 @@ This "vibe check" now serves as a baseline, of sorts, to help understand what ho
 #### ❓Question #1:
 
 What are some limitations of vibe checking as an evaluation tool?
-##### ✅ Answer:
+##### ✅ Answer: Vibe checking is highly subjective. Something that would be make sense to me might not make sense to someone else. Since it is subjctive it would be hard to scale in real world applications. 
 
 ### 🚧 Advanced Build (OPTIONAL):
 
@@ -71,11 +71,11 @@ Please make adjustments to your application that you believe will improve the vi
 - _describe adjustment(s) here_
 
 ##### Results:
-1. _Comment here how the change(s) impacted the vibe check of your system_
-2. 
-3. 
-4. 
-5.
+1. Selected sad emotion. Although it did use a few words to suggest it was sad, I didn't think the whole response was very sad. Its response was succinct and not wordy like it was in the previous response. Response still had an accurate explanation for what is OOP
+2. Selected happy emotion. Response had a celebratory feel to it and also included a few "happy" and "celebratory" emojis to them.
+3. Tried both angry and happy emotions for the story. Both were imaginative, though the happy emotion went better with the prompt. The angry output just included noises like `grrr` and `here is a your dumb story`.
+4. Used sad emotion. Accurate result, but way less wordy than before (according to the prompt set for this emotion)
+5. selected happy emotion: The emotion didn't seem to change the content all that much from earlier non-emotion prompt. The only way it sounded happy was through the use of emotions, so that may or may not have been professional.
 
 
 ## Submitting Your Homework
