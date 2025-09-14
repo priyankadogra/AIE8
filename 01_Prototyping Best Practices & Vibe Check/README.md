@@ -36,16 +36,16 @@ You will be required to submit a link to your GitHub, as well as screenshots of 
 
 Please evaluate your system on the following questions:
 
-Explain the concept of object-oriented programming in simple terms to a complete beginner. 
-    - Aspect Tested: Is answer fairly accurate. I think the answer was accurate although a bit too wordy. Could have been more succint I think.
+Explain the concept of object-oriented programming in simple terms to a complete beginner.
+- Aspect Tested: Is answer fairly accurate. I think the answer was accurate although a bit too wordy. Could have been more succint I think.
 2. Read the following paragraph and provide a concise summary of the key points…
-    - Aspect Tested: Does it contain an actual summary containing all the main points. Output was a good summary of the paragraph and no strange output.
+- Aspect Tested: Does it contain an actual summary containing all the main points. Output was a good summary of the paragraph and no strange output.
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
-    - Aspect Tested: Looked for a story that is imaginative but also something that could be plausible. The output was imaginative and had interesting imagery.
+- Aspect Tested: Looked for a story that is imaginative but also something that could be plausible. The output was imaginative and had interesting imagery.
 4. If a store sells apples in packs of 4 and oranges in packs of 3, how many packs of each do I need to buy to get exactly 12 apples and 9 oranges?
-    - Aspect Tested: I was looking for an accuracte answer as this was a mathematical question. Output had exactly the correct answer and how it arrived at the correct answer. 
+- Aspect Tested: I was looking for an accuracte answer as this was a mathematical question. Output had exactly the correct answer and how it arrived at the correct answer. 
 5. Rewrite the following paragraph in a professional, formal tone…
-    - Aspect Tested: Testing the tone of the output. The output was professional/ formal.
+- Aspect Tested: Testing the tone of the output. The output was professional/ formal.
 
 This "vibe check" now serves as a baseline, of sorts, to help understand what holes your application has.
 
@@ -58,7 +58,7 @@ This "vibe check" now serves as a baseline, of sorts, to help understand what ho
 #### ❓Question #1:
 
 What are some limitations of vibe checking as an evaluation tool?
-##### ✅ Answer: Vibe checking is highly subjective. Something that would be make sense to me might not make sense to someone else. Since it is subjctive it would be hard to scale in real world applications. 
+##### ✅ Answer: Vibe checking is highly subjective. Something that would be make sense to me might not make sense to someone else. Since it is subjective it would be hard to scale in real world applications. 
 
 ### 🚧 Advanced Build (OPTIONAL):
 
