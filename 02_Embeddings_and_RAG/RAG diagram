@@ -1,3 +1,4 @@
+1) Convert PDF to Text Chunks
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   PDF Document  │───▶│  Text Splitter  │───▶│  Text Chunks    │
 │ (Walter Mitty)  │    │ (1000 chars)    │    │ (15 chunks)     │
@@ -13,3 +14,42 @@
                        │ (Store all chunk│    │  (Embeddings)   │
                        │  vectors)       │    │                 │
                        └─────────────────┘    └─────────────────┘
+
+2) Use Embeddings to Answer Questions (Query Phase)
+┌─────────────────┐
+│ User asks a     │
+│ question        │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Question is     │
+│ converted to a  │
+│ vector using    │
+│ OpenAI's        │
+│ embedding API   │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Query vector is │
+│ compared with   │
+│ stored vectors  │
+│ in the database │
+│ to find most    │
+│ relevant chunks │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Relevant chunks │
+│ + question are  │
+│ sent to LLM     │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ LLM generates   │
+│ the final       │
+│ answer          │
+└─────────────────┘
