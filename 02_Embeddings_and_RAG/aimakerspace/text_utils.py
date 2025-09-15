@@ -1,5 +1,6 @@
 import os
 from typing import List
+import pdfplumber
 
 
 class TextFileLoader:
@@ -11,16 +12,43 @@ class TextFileLoader:
     def load(self):
         if os.path.isdir(self.path):
             self.load_directory()
-        elif os.path.isfile(self.path) and self.path.endswith(".txt"):
+        elif os.path.isfile(self.path) and (self.path.endswith(".txt") or self.path.endswith(".pdf")):
             self.load_file()
         else:
             raise ValueError(
-                "Provided path is neither a valid directory nor a .txt file."
+                "Provided path is neither a valid directory nor a supported file (.txt or .pdf)."
             )
 
     def load_file(self):
-        with open(self.path, "r", encoding=self.encoding) as f:
-            self.documents.append(f.read())
+        if self.path.endswith(".pdf"):
+            self.load_pdf()
+        else:
+            with open(self.path, "r", encoding=self.encoding) as f:
+                content = f.read()
+                # Remove BOM (Byte Order Mark) if present
+                if content.startswith('\ufeff'):
+                    content = content[1:]
+                self.documents.append(content)
+    
+    def load_pdf(self):
+        """Load text content from a PDF file using pdfplumber."""
+        try:
+            with pdfplumber.open(self.path) as pdf:
+                content = ""
+                for page in pdf.pages:
+                    page_text = page.extract_text()
+                    if page_text:
+                        content += page_text + "\n"
+                
+                # Clean up the content
+                content = content.strip()
+                if content:
+                    self.documents.append(content)
+                else:
+                    print(f"Warning: No text content found in PDF {self.path}")
+        except Exception as e:
+            print(f"Error reading PDF {self.path}: {e}")
+            raise
 
     def load_directory(self):
         for root, _, files in os.walk(self.path):
@@ -29,7 +57,33 @@ class TextFileLoader:
                     with open(
                         os.path.join(root, file), "r", encoding=self.encoding
                     ) as f:
-                        self.documents.append(f.read())
+                        content = f.read()
+                        # Remove BOM (Byte Order Mark) if present
+                        if content.startswith('\ufeff'):
+                            content = content[1:]
+                        self.documents.append(content)
+                elif file.endswith(".pdf"):
+                    self.load_pdf_file(os.path.join(root, file))
+    
+    def load_pdf_file(self, file_path):
+        """Load text content from a single PDF file."""
+        try:
+            with pdfplumber.open(file_path) as pdf:
+                content = ""
+                for page in pdf.pages:
+                    page_text = page.extract_text()
+                    if page_text:
+                        content += page_text + "\n"
+                
+                # Clean up the content
+                content = content.strip()
+                if content:
+                    self.documents.append(content)
+                else:
+                    print(f"Warning: No text content found in PDF {file_path}")
+        except Exception as e:
+            print(f"Error reading PDF {file_path}: {e}")
+            # Don't raise here to continue processing other files
 
     def load_documents(self):
         self.load()
