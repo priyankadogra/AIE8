@@ -1,0 +1,9 @@
+Platform: twitter
+Character count: 280
+Hashtag count: 5
+
+--- POST CONTENT ---
+🚀💡 Dive into the groundbreaking paper "Attention Is All You Need" by Vaswani et al.! This transformative work introduced the #Transformer architecture and the game-changing self-attention mechanism, shaking up the world of #NLP. 🌍✨
+
+🔹 Eliminated the need for RNNs/CNNs  
+🔹 Enab...
