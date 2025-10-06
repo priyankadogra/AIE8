@@ -5,6 +5,25 @@ This module provides a custom chunking strategy that:
 1. Chunks semantically similar sentences based on a designed threshold
 2. Groups paragraphs greedily up to a maximum chunk size
 3. Ensures minimum chunk size is a single sentence
+
+**How It Works:**
+1. **Sentence-Level Processing**: Splits paragraphs into individual sentences
+2. **Semantic Similarity**: Calculates cosine similarity between sentence embeddings
+3. **Consecutive Grouping**: Groups semantically similar consecutive sentences
+4. **Greedy Merging**: Merges chunks up to maximum size while maintaining semantic coherence
+
+**Example Process:**
+```
+Original Paragraph:
+"The weather is sunny today. I love going to the beach. The stock market crashed. Investors are worried."
+
+Processing:
+- Sentences 1-2: Similar (weather/beach) → Chunk 1
+- Sentences 3-4: Similar (finance) → Chunk 2
+
+Result:
+Chunk 1: "The weather is sunny today. I love going to the beach."
+Chunk 2: "The stock market crashed. Investors are worried."
 """
 
 import numpy as np
