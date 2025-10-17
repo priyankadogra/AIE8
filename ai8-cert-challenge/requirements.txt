@@ -1,0 +1,30 @@
+# Core dependencies
+streamlit
+langchain
+langchain-openai
+langchain-community
+qdrant-client
+openai
+numpy
+pandas
+tqdm
+
+# Data processing
+pypdf
+python-dateutil
+dateparser
+pydantic
+icalendar
+
+# RAG and embeddings
+sentence-transformers
+faiss-cpu
+
+# Evaluation
+ragas
+datasets
+evaluate
+
+# Utilities
+python-dotenv
+pathlib
