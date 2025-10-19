@@ -121,7 +121,9 @@ def answer_query_tool(query: str) -> dict:
     else:
         search_text = query
 
-    snippets = rag_search(search_text, k=5)
+    # Use RAG search with optional reranking
+    use_reranking = AGENT_STATE.get("use_reranking", False)
+    snippets = rag_search(search_text, k=5, use_reranking=use_reranking)
 
     context = {
         "query": query,

@@ -16,7 +16,7 @@ from config import LOCAL_TZ, PDF_DIR, COLLECTION_NAME, EMBEDDING_DIM, COHERE_API
 from .data_processing import pdf_to_text, guess_newsletter_date, _coerce_dt, dedupe_events, list_upcoming, list_deadlines, to_ics
 
 class CohereRAG:
-    def __init__(self, collection_name: str = COLLECTION_NAME):
+    def __init__(self, collection_name: str = "cohere_newsletters"):
         self.collection_name = collection_name
         self.client_q = QdrantClient(location=":memory:")
         self.cohere_client = cohere.Client(COHERE_API_KEY)
@@ -231,8 +231,8 @@ class CohereRAG:
         
         return result
 
-# Global instance
-cohere_rag = CohereRAG()
+# Global instance with separate collection
+cohere_rag = CohereRAG(collection_name="cohere_newsletters")
 
 def build_cohere_index_from_folder(pdf_folder: str):
     """Build Cohere RAG index from folder"""

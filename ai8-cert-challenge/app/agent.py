@@ -26,8 +26,15 @@ from .data_processing import ExtractedEvent, ExtractionBundle, pdf_to_text, gues
 from .rag import client_q, ensure_collection, split_into_chunks, file_fingerprint, point_id_for, embed_texts, MANIFEST_CACHE, delete_chunks_for, index_folder_incremental, qdrant_search, build_rag_index_from_folder, rag_search
 from .tools import AGENT_STATE, TOOLS, tool, read_pdfs, extract_events, dedupe_tool, build_index_tool, parse_query, parse_query_tool, find_events_by_date, find_events_by_keyword, answer_query_tool, ensure_prepared
 
-# Create LLM
-llm = ChatOpenAI(model=AGENT_MODEL, temperature=AGENT_TEMPERATURE)
+# Lazy LLM creation
+llm = None
+
+def get_llm():
+    """Get LLM, creating it only when needed"""
+    global llm
+    if llm is None:
+        llm = ChatOpenAI(model=AGENT_MODEL, temperature=AGENT_TEMPERATURE)
+    return llm
 
 # Create tools manually (not using @tool decorator)
 class SearchEventsTool(BaseTool):
@@ -106,18 +113,31 @@ prompt = ChatPromptTemplate.from_messages([
     ("placeholder", "{agent_scratchpad}")
 ])
 
-# Create agent
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+# Lazy agent creation
+agent = None
+agent_executor = None
 
-def ask(question: str, pdf_folder: str) -> str:
-    """Agent-based question answering."""
+def get_agent_executor():
+    """Get agent executor, creating it only when needed"""
+    global agent, agent_executor
+    if agent_executor is None:
+        llm = get_llm()
+        agent = create_openai_tools_agent(llm, tools, prompt)
+        agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+    return agent_executor
+
+def ask(question: str, pdf_folder: str, use_reranking: bool = False) -> str:
+    """Agent-based question answering with optional reranking."""
     # Ensure data is prepared (keep your existing logic)
     if (AGENT_STATE.get("pdf_folder") != pdf_folder or 
         not AGENT_STATE.get("all_events") or 
         len(AGENT_STATE["all_events"]) == 0):
         ensure_prepared(pdf_folder)
     
+    # Set reranking preference in agent state
+    AGENT_STATE["use_reranking"] = use_reranking
+    
     # Use agent to answer
+    agent_executor = get_agent_executor()
     result = agent_executor.invoke({"input": question})
     return result["output"]

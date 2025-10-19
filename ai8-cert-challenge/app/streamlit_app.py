@@ -6,25 +6,35 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+# Import modules at the top level
+from config import PDF_DIR
+from app.agent import ask, agent_executor
+from app.tools import ensure_prepared
+from app.rag import index_health_check, build_rag_index_from_folder
+
 # API Key Input (set this first)
 st.sidebar.title("🔑 API Configuration")
-api_key = st.sidebar.text_input(
+openai_key = st.sidebar.text_input(
     "OpenAI API Key", 
     type="password",
     help="Enter your OpenAI API key to use the assistant"
 )
 
-if api_key:
-    os.environ["OPENAI_API_KEY"] = api_key
-    st.sidebar.success("✅ API Key set!")
+cohere_key = st.sidebar.text_input(
+    "Cohere API Key", 
+    type="password",
+    help="Enter your Cohere API key for enhanced retrieval with reranking"
+)
+
+if openai_key:
+    os.environ["OPENAI_API_KEY"] = openai_key
+    st.sidebar.success("✅ OpenAI API Key set!")
     
-    # Now import other modules (only after API key is set)
-           from config import PDF_DIR
-           from app.agent import ask, ensure_prepared, agent_executor
-           from app.rag import index_health_check
-           from app.cohere_rag import cohere_health_check
-           from app.tools import build_cohere_index_tool, answer_query_cohere_tool
-    
+if cohere_key:
+    os.environ["COHERE_API_KEY"] = cohere_key
+    st.sidebar.success("✅ Cohere API Key set!")
+
+if openai_key:
     # Data Management Section
     st.sidebar.title("📁 Data Management")
     if st.sidebar.button("🔄 Prepare Data"):
@@ -32,34 +42,34 @@ if api_key:
             ensure_prepared(PDF_DIR)
         st.success("✅ Data prepared successfully!")
     
-    # Cohere Index
-    if st.sidebar.button("🧠 Build Cohere Index"):
-        with st.spinner("Building Cohere compressed index..."):
-            result = build_cohere_index_tool(PDF_DIR)
-        st.success(f"✅ Cohere index built! {result}")
+    # Build Index (unified)
+    if st.sidebar.button("🧠 Build RAG Index"):
+        with st.spinner("Building RAG index..."):
+            result = build_rag_index_from_folder(PDF_DIR)
+        st.success(f"✅ RAG index built! {result}")
     
     # Health Check
     st.sidebar.title("🏥 Health Checks")
-    if st.sidebar.button("📊 Check Regular Index"):
+    if st.sidebar.button("📊 Check RAG Index"):
         health_status = index_health_check()
-        st.sidebar.write(health_status)
-    
-    if st.sidebar.button("🧠 Check Cohere Index"):
-        health_status = cohere_health_check()
         st.sidebar.write(health_status)
     
     # Main Chat Interface
     st.title("🏫 School Events Assistant")
     st.write("Ask questions about school events and activities!")
-    
+        
     # Retrieval Method Selection
     st.sidebar.title("🔧 Retrieval Settings")
-    use_cohere = st.sidebar.checkbox("Use Cohere Compression", help="Enable Cohere-compressed retrieval for better context quality")
+    use_reranking = st.sidebar.checkbox("Use Cohere Reranking", help="Enable Cohere reranking for better retrieval quality")
     
-    if use_cohere:
-        st.info("🧠 Using Cohere-compressed retrieval for enhanced context quality")
+    if use_reranking:
+        if not cohere_key:
+            st.warning("⚠️ Cohere API key required for reranking")
+            use_reranking = False
+        else:
+            st.info("🧠 Using Cohere reranking for enhanced retrieval quality")
     else:
-        st.info("📊 Using standard retrieval")
+        st.info("📊 Using standard vector similarity retrieval")
     
     # Chat History
     if "messages" not in st.session_state:
@@ -82,16 +92,8 @@ if api_key:
         # Get assistant response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                if use_cohere:
-                    # Use Cohere-compressed retrieval
-                    result = answer_query_cohere_tool(prompt)
-                    response = result["answer"]
-                    # Add retrieval method info
-                    if result.get("retrieval_method"):
-                        response += f"\n\n*Retrieved using: {result['retrieval_method']}*"
-                else:
-                    # Use standard retrieval
-                    response = ask(prompt, PDF_DIR)
+                # Use unified RAG with optional reranking
+                response = ask(prompt, PDF_DIR, use_reranking=use_reranking)
             st.markdown(response)
         
         # Add assistant response to chat history
@@ -99,4 +101,4 @@ if api_key:
 
 else:
     st.sidebar.warning("⚠️ Please enter your OpenAI API key")
-    st.info("Enter your API key in the sidebar to start using the assistant")
+    st.info("Enter your API keys in the sidebar to start using the assistant")

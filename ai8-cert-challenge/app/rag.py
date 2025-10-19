@@ -26,9 +26,31 @@ from pathlib import Path
 from .data_processing import pdf_to_text, guess_newsletter_date, _coerce_dt, dedupe_events, list_upcoming, list_deadlines, to_ics
 
 from openai import OpenAI
+import cohere
 
-# Create OpenAI client
-client = OpenAI()
+# Lazy client creation (only when needed)
+client = None
+cohere_client = None
+COHERE_AVAILABLE = False
+
+def get_openai_client():
+    """Get OpenAI client, creating it only when needed"""
+    global client
+    if client is None:
+        client = OpenAI()
+    return client
+
+def get_cohere_client():
+    """Get Cohere client, creating it only when needed"""
+    global cohere_client, COHERE_AVAILABLE
+    if cohere_client is None and os.getenv("COHERE_API_KEY"):
+        try:
+            cohere_client = cohere.Client(os.getenv("COHERE_API_KEY"))
+            COHERE_AVAILABLE = True
+        except:
+            cohere_client = None
+            COHERE_AVAILABLE = False
+    return cohere_client
 
 # --- in-memory Qdrant ---
 client_q = QdrantClient(location=":memory:")   # ephemeral, per notebook session
@@ -85,6 +107,7 @@ EMB_MODEL = EMBEDDING_MODEL
 def embed_texts(texts: list[str]) -> np.ndarray:
     if not texts:
         return np.zeros((0, EMBEDDING_DIM), dtype="float32")
+    client = get_openai_client()
     resp = client.embeddings.create(model=EMB_MODEL, input=texts)
     return np.array([d.embedding for d in resp.data], dtype="float32")
 
@@ -138,21 +161,66 @@ def index_folder_incremental(pdf_folder: str, max_chars=800, overlap=100) -> dic
 
     return {"indexed": indexed, "skipped": skipped, "total_files": len(files)}
 
-# --- Qdrant search wrapper ---
-def qdrant_search(query: str, k: int = 5, filter_sources: list[str] | None = None):
+# --- Qdrant search wrapper with optional Cohere reranking ---
+def qdrant_search(query: str, k: int = 5, filter_sources: list[str] | None = None, use_reranking: bool = False):
     qvec = embed_texts([query])[0].tolist()
     q_filter = None
     if filter_sources:
         q_filter = Filter(must=[FieldCondition(key="source_pdf", match=MatchValue(value=filter_sources))])
+    
+    # Get more results if using reranking
+    initial_k = min(k * 3, 20) if use_reranking else k
+    
     res = client_q.search(
         collection_name=COLLECTION_NAME,
         query_vector=qvec,
-        limit=k,
+        limit=initial_k,
         query_filter=q_filter,
         with_payload=True,
     )
+    
+    if not res:
+        return []
+    
+    # If reranking is enabled and Cohere is available
+    if use_reranking:
+        cohere_client = get_cohere_client()
+        if cohere_client and COHERE_AVAILABLE:
+            try:
+                # Prepare documents for reranking
+                documents = []
+                for r in res:
+                    payload = r.payload or {}
+                    documents.append(payload.get("text", ""))
+                
+                # Apply Cohere reranking
+                rerank_response = cohere_client.rerank(
+                    model="rerank-english-v3.0",
+                    query=query,
+                    documents=documents,
+                    top_n=k
+                )
+                
+                # Format reranked results
+                out = []
+                for result in rerank_response.results:
+                    doc_idx = result.index
+                    r = res[doc_idx]
+                    payload = r.payload or {}
+                    out.append(({
+                        "source_pdf": payload.get("source_pdf"), 
+                        "text": payload.get("text", "")
+                    }, float(result.relevance_score)))
+                
+                return out
+                
+            except Exception as e:
+                print(f"Cohere reranking failed: {e}")
+                # Fallback to original results
+    
+    # Standard results (no reranking or reranking failed)
     out = []
-    for r in res:
+    for r in res[:k]:  # Take top k results
         payload = r.payload or {}
         out.append(({"source_pdf": payload.get("source_pdf"), "text": payload.get("text","")}, float(r.score)))
     return out
@@ -161,8 +229,8 @@ def qdrant_search(query: str, k: int = 5, filter_sources: list[str] | None = Non
 def build_rag_index_from_folder(pdf_folder: str):
     return index_folder_incremental(pdf_folder)
 
-def rag_search(query: str, k=5):
-    return qdrant_search(query, k=k)
+def rag_search(query: str, k=5, use_reranking=False):
+    return qdrant_search(query, k=k, use_reranking=use_reranking)
 
 
 def index_health_check(collection: str = COLLECTION_NAME, sample_query: str = "Spirit Day"):
