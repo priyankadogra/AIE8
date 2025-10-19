@@ -18,6 +18,7 @@ from config import LOCAL_TZ, PDF_DIR, COLLECTION_NAME, EMBEDDING_MODEL, EMBEDDIN
 from .data_processing import ExtractedEvent, ExtractionBundle, pdf_to_text, guess_newsletter_date, _coerce_dt, dedupe_events, list_upcoming, list_deadlines, to_ics
 
 from .rag import build_rag_index_from_folder, rag_search, client_q, ensure_collection, split_into_chunks, file_fingerprint, point_id_for, embed_texts, MANIFEST_CACHE, delete_chunks_for, index_folder_incremental, qdrant_search
+from .cohere_rag import build_cohere_index_from_folder, cohere_rag_search, cohere_health_check
 
 # ---------- Agent state & tool registry ----------
 AGENT_STATE = {"all_events": [], "pdf_folder": None}
@@ -49,6 +50,11 @@ def dedupe_tool(_: str = "") -> Dict[str, Any]:
 @tool("build_index")
 def build_index_tool(folder: str) -> dict:
     return build_rag_index_from_folder(folder)
+
+@tool("build_cohere_index")
+def build_cohere_index_tool(folder: str) -> dict:
+    """Build RAG index using Cohere compression for better retrieval quality"""
+    return build_cohere_index_from_folder(folder)
 
 # ---- Query parsing ----
 PARSE_SYSTEM = """You parse a parent's question about school events.
@@ -155,6 +161,64 @@ CONTEXT:
             "events_matched": len(selected),
             "sources_consulted": list({s["source"] for s in context["snippets"]})[:3],
             "answer": answer}
+
+@tool("answer_query_cohere")
+def answer_query_cohere_tool(query: str) -> dict:
+    """Answer queries using Cohere-compressed retrieval for better context quality"""
+    intent = parse_query(query)
+    intent_type = intent.get("intent")
+    date_iso = intent.get("date")
+    keywords = intent.get("keywords") or []
+    events = AGENT_STATE["all_events"]
+
+    selected: List[ExtractedEvent] = []
+    if intent_type == "date_query" and date_iso:
+        selected = find_events_by_date(events, date_iso)
+        search_text = f"{date_iso} " + " ".join(keywords)
+    elif intent_type in ("event_query","instructions_query") and keywords:
+        selected = find_events_by_keyword(events, keywords)
+        search_text = " ".join(keywords)
+    else:
+        search_text = query
+
+    # Use Cohere-based search instead of regular RAG
+    snippets = cohere_rag_search(search_text, k=5)
+
+    context = {
+        "query": query,
+        "intent": intent,
+        "events": [{
+            "title": e.title,
+            "start": e.start.isoformat() if e.start else None,
+            "all_day": e.all_day,
+            "location": e.location,
+            "grades": e.grades,
+            "actions": e.actions,
+            "deadline": e.deadline.isoformat() if e.deadline else None,
+            "source": e.source_pdf,
+            "notes": e.notes,
+            "confidence": e.confidence,
+        } for e in selected],
+        "snippets": [{"source": ch["source_pdf"], "similarity": sim, "text": ch["text"][:500], "compressed": ch.get("compressed", False)} for ch, sim in snippets]
+    }
+
+    prompt = f"""Answer the user's question using ONLY the context.
+If giving instructions, list bullets and cite the source filename in parentheses.
+
+CONTEXT:
+{json.dumps(context, ensure_ascii=False)}
+"""
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini", temperature=0.2,
+        messages=[{"role":"system","content":ANSWER_SYSTEM},
+                  {"role":"user","content":prompt}]
+    )
+    answer = resp.choices[0].message.content.strip()
+    return {"parsed_intent": intent,
+            "events_matched": len(selected),
+            "sources_consulted": list({s["source"] for s in context["snippets"]})[:3],
+            "answer": answer,
+            "retrieval_method": "cohere_compressed"}
 
 # -------- Minimal planner (single-call convenience) --------
 def ensure_prepared(pdf_folder: str):
