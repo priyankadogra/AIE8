@@ -55,7 +55,7 @@ if openai_key:
         st.sidebar.write(health_status)
     
     # Main Chat Interface
-    st.title("🏫 School Events Assistant")
+    st.title("🏫 Scout - School Events Assistant")
     st.write("Ask questions about school events and activities!")
         
     # Retrieval Method Selection
@@ -81,7 +81,7 @@ if openai_key:
             st.markdown(message["content"])
     
     # Chat input
-    if prompt := st.chat_input("Ask about school events..."):
+    if prompt := st.chat_input("Ask Scout about school events..."):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         
@@ -101,4 +101,4 @@ if openai_key:
 
 else:
     st.sidebar.warning("⚠️ Please enter your OpenAI API key")
-    st.info("Enter your API keys in the sidebar to start using the assistant")
+    st.info("Enter your API keys in the sidebar to start using Scout")
