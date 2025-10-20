@@ -40,7 +40,7 @@ I built the frontend using streamlit (a light weight ui for python). For demo da
 
 ## Creating a Golden Test Data Set
 ### Assess your pipeline using the RAGAS framework including key metrics faithfulness, response relevance, context precision, and context recall. Provide a table of your output results.
-I ended up manually creating my test data set as I was running into issues with the synthetic data generation. The error suggested that there might be some issue with generating personas. In the interest of time I switched to generating some questions myself and used it for both retrievals. Please refer to [table](evaluation/Ragas%20Evaluation%20Comparison.xlsxfile.ext) for Naive Retrieval metrics.
+I ended up manually creating my test data set as I was running into issues with the synthetic data generation. The error suggested that there might be some issue with generating personas. In the interest of time I switched to generating some questions myself and used it for both retrievals. Please refer to [table](evaluation/Ragas%20Evaluation%20Comparison.xlsx) for Naive Retrieval metrics.
 
 ### What conclusions can you draw about the performance and effectiveness of your pipeline with this information?
 for the naive retrieval the results for the metrics were as follows - 
@@ -57,7 +57,7 @@ I decided to use cohere re-ranking to help improve retrieval quality (fetching m
 
 ## Assessing Performance
 ### How does the performance compare to your original RAG application? Test the new retrieval pipeline using the RAGAS frameworks to quantify any improvements. Provide results in a table.
-Please refer to [table](evaluation/Ragas%20Evaluation%20Comparison.xlsxfile.ext) for Advanced Retrieval metrics using Cohere Re-ranking.
+Please refer to [table](evaluation/Ragas%20Evaluation%20Comparison.xlsx)  for Advanced Retrieval metrics using Cohere Re-ranking.
 Faithfulness: Slight Increase (-0.5%) - reranking may have a minor improvement
 Answer Relevancy: Marginal improvement (-0.19%) - minor decrease in answer relavncy, suggesting that answers are still quite relevant
 Context Precision: No change (0.0%) - same chunk relevance
@@ -76,7 +76,3 @@ The above results suggest that re-ranking has a small impact on materially impro
 ### A 5-minute (OR LESS) loom video of a live demo of your application that also describes the use case.
 ### A written document addressing each deliverable and answering each question
 ### All relevant code
-
-
-
-
