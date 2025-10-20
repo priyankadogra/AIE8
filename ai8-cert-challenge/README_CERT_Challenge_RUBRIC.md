@@ -58,11 +58,11 @@ I decided to use cohere re-ranking to help improve retrieval quality (fetching m
 ## Assessing Performance
 ### How does the performance compare to your original RAG application? Test the new retrieval pipeline using the RAGAS frameworks to quantify any improvements. Provide results in a table.
 Please refer to [table](evaluation/Ragas%20Evaluation%20Comparison.xlsx) or [google docs link](https://docs.google.com/spreadsheets/d/163j1m4TgC1yK_oFrNCmWIbTJjzWlhJSQGZhuwWXSp1k/edit?usp=sharing) for Advanced Retrieval metrics using Cohere Re-ranking.
-Faithfulness: Slight Increase (-0.5%) - reranking may have a minor improvement
-Answer Relevancy: Marginal improvement (-0.19%) - minor decrease in answer relavncy, suggesting that answers are still quite relevant
+Faithfulness: Slight Decrease (-3.5%) - reranking slightly deteriorated the faithfulness
+Answer Relevancy: Marginal improvement (+0.10%) - minor increase in answer relavncy, suggesting that answers are still quite relevant
 Context Precision: No change (0.0%) - same chunk relevance
 Context Recall: No change (0.0%) - same information retrieval
-The above results suggest that re-ranking has a small impact on materially improving the Scout agent. I think I could further improve Scout by improving the chunking by perhaps using semantic chunking or other chunking by titles and sub titles of sections.
+The above results suggest that re-ranking has a small impact on materially improving the Scout agent. I think I could further improve Scout by improving the chunking by perhaps using semantic chunking or other hybrid chunking by titles and sub titles of sections and chunking important dates as a full sentence.
 
 
 ### Articulate the changes that you expect to make to your app in the second half of the course. How will you improve your application?
