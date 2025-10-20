@@ -73,6 +73,6 @@ The above results suggest that re-ranking has a small impact on materially impro
 
 
 ## Public Github Repo
-### A 5-minute (OR LESS) loom video of a live demo of your application that also describes the use case.
+### A 5-minute (OR LESS) loom video of a live demo of your application that also describes the use case. [link to loom video](https://www.loom.com/share/41738e93e8c1407f9f485a6e259d07a9?sid=015e105b-6c86-4263-858e-9037483e5f27)
 ### A written document addressing each deliverable and answering each question
 ### All relevant code
