@@ -53,7 +53,7 @@ context_recall: This measures how many of the relevant documents or piece of inf
 
 ## Advanced Retrieval
 ### Swap out base retriever with advnaced retrieval methods.
-I decided to use cohere re-ranking to help improve retrieval quality (fetching more results and then re-ranking them). The re-ranking can also filter out irrelevant chunks and increase precision. Re-ranking could also help surface more relevant information that might be buried in lower ranked results.
+I decided to use cohere re-ranking to help improve retrieval quality (fetching more results and then re-ranking them). The re-ranking can also filter out irrelevant chunks and increase precision. Re-ranking could also help surface more relevant information that might be buried in lower ranked results. When co-here re-ranking is selected, we fetch 15 documents.
 
 ## Assessing Performance
 ### How does the performance compare to your original RAG application? Test the new retrieval pipeline using the RAGAS frameworks to quantify any improvements. Provide results in a table.
@@ -62,7 +62,7 @@ Faithfulness: Slight Decrease (-3.5%) - reranking slightly deteriorated the fait
 Answer Relevancy: Marginal improvement (+0.10%) - minor increase in answer relavncy, suggesting that answers are still quite relevant
 Context Precision: No change (0.0%) - same chunk relevance
 Context Recall: No change (0.0%) - same information retrieval
-The above results suggest that re-ranking has a small impact on materially improving the Scout agent. I think I could further improve Scout by improving the chunking by perhaps using semantic chunking or other hybrid chunking by titles and sub titles of sections and chunking important dates as a full sentence.
+The above results suggest that re-ranking has a small impact on materially improving the Scout agent. I think I could further improve Scout by improving the chunking by using semantic chunking or other hybrid chunking by titles and sub titles of sections and chunking important dates as a full sentence.
 
 
 ### Articulate the changes that you expect to make to your app in the second half of the course. How will you improve your application?
@@ -70,9 +70,15 @@ The above results suggest that re-ranking has a small impact on materially impro
 2) When user asks about an event, ask user whether they would like to add a calendar invite for it.
 3) Allow user to directly integrate with gmail.
 4) I also want to try different chunking straegies like increasing the sizes of the chunks and having different chunking strategies for different sections like important dates and for longer sections. These chunking strategies could further improve RAGAS metrics Faithfulness in particular.
+5) Implement only once retrieval method after some more analysis on what might be the best.
 
 
 ## Public Github Repo
-### A 5-minute (OR LESS) loom video of a live demo of your application that also describes the use case. [link to loom video](https://www.loom.com/share/41738e93e8c1407f9f485a6e259d07a9?sid=015e105b-6c86-4263-858e-9037483e5f27)
+### A 5-minute (OR LESS) loom video of a live demo of your application that also describes the use case. [link to loom video](https://www.loom.com/share/d10ce03d75e4403abf38f2f71eda6dd9?sid=7c850bbf-2c91-4fe0-af46-0335c90b7127)
 ### A written document addressing each deliverable and answering each question
+This readme has all the answers to the rubric.
+
 ### All relevant code
+All relevant code is in the `app` folder.
+`data` folder has the school newsletters. 
+`evaluation` has the RAGAS evaluations.

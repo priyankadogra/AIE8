@@ -45,15 +45,9 @@ pip install -e .
 
 1. Place your newsletter PDFs in the `data/newsletters/` directory
 
-2. Open and run the `school_events.ipynb` notebook:
-```bash
-uv run jupyter lab school_events.ipynb
-```
+2. nstall dependencies
 
-3. Follow the notebook cells to:
-   - Extract events from PDFs
-   - Filter and deduplicate events
-   - Export to calendar format
+3. run the app by running - `uv run streamlit run app/streamlit_app.py`
 
 ## Project Structure
 
@@ -72,7 +66,6 @@ ai8-cert-challenge/
 - `pypdf` - PDF text extraction
 - `python-dateutil` & `dateparser` - Date parsing
 - `pydantic` - Data validation
-- `icalendar` - Calendar file generation
 - `openai` - AI-powered event extraction
 - `streamlit` - Web interface (future)
 - `tqdm` - Progress bars
