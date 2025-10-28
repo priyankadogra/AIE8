@@ -55,6 +55,7 @@ You should use Before when:
 - Provide additional context before processing like you need tha agent to be brief or more verbose
 - Inspect what is being passed to the node
 - Change how you want to the node to behave
+
 You should use After when: 
 - You want to change what the node produced
 - Force different routing choices.
