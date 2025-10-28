@@ -39,7 +39,7 @@ Run the repository and complete the following:
 Compare the `agent` and `agent_helpful` assistants defined in `langgraph.json`. Where does the helpfulness evaluator fit in the graph, and under what condition should execution route back to the agent vs. terminate?
 
 ##### ✅ Answer:
-_(enter answer here)_
+The helpfulness agent is called when no tool calls are needed by the LLM and is a quality control loop. The routing decision is made in route_to_action_or_helpfulness. If no tool calls needed route to helpfulness. The helpfulness decision is made in helpfulness_decision. If the response is helpful, terminate. If the response is not helpful, route back to the agent. If there are > 10 messages terminate so as to protect from infinite looping.
 
 #### 🏗️ Activity #1 Debugging A Graph
 
@@ -50,7 +50,16 @@ Select the `agent_with_helpfulness` and set one or more interrupts (at least one
 What are your thoughts on when you would use a Before interrupt vs. an After interrupt?
 
 ##### ✅ Answer:
-_(enter answer here)_
+You should use Before when:
+- You want to influence the input that the node will receive
+- Provide additional context before processing like you need tha agent to be brief or more verbose
+- Inspect what is being passed to the node
+- Change how you want to the node to behave
+You should use After when: 
+- You want to change what the node produced
+- Force different routing choices.
+- Fix mistakes in the node's output.
+- Apply additional logic to the result. 
 
 
 
