@@ -150,8 +150,14 @@ async def main() -> None:
         response = await client.send_message(request)
         print(response.model_dump(mode='json', exclude_none=True))
 
-        task_id = response.root.result.id
-        context_id = response.root.result.context_id
+        # Check if the response is successful before accessing result attributes
+        if hasattr(response, 'root') and hasattr(response.root, 'result'):
+            task_id = response.root.result.id
+            context_id = response.root.result.context_id
+        else:
+            logger.error(f"Server returned an error response: {response}")
+            logger.error("Cannot proceed with multi-turn conversation due to server error")
+            return
 
         second_send_message_payload_multiturn: dict[str, Any] = {
             'message': {

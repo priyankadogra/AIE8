@@ -85,14 +85,18 @@ Do this by creating a Simple Agent that can make API calls to the 🤖Agent Node
 ### ❓ Question #1:
 
 What are the core components of an `AgentCard`?
-
 ##### ✅ Answer:
+*Basic Information:* Like name, description of the purpose the service, the service URL endpoint for communication and version number.
+*Capabilities:* Describes the capabilities of the agent for example does it support streaming and push notifications.
+*Skills:* The specific tasks the agent can perform.
+*Authentication:* Information on the security schemes required to interact with the agent such as OAuth
 
 <br />
 
 ### ❓ Question #2:
 
 Why is A2A (and other such protocols) important in your own words?
+A2A is important because it defines the protocol for how agents can talk to each other securely in a standardized way. It enables complex agents to be broken down into more smaller less complex agents that can talk to each other. This can also enable building more modular systems where agents can be swapped in and out as needed.
 
 ##### ✅ Answer:
 
