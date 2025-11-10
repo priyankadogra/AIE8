@@ -43,32 +43,85 @@ pip install -e .
 
 ## Usage
 
+### Option 1: React Frontend (Recommended for Deployment)
+
 1. Place your newsletter PDFs in the `data/newsletters/` directory
 
-2. nstall dependencies
+2. Start the backend:
+```bash
+./start_backend.sh
+# or manually: uvicorn app.api:app --reload --host 0.0.0.0 --port 8000
+```
 
-3. run the app by running - `uv run streamlit run app/streamlit_app.py`
+3. In a new terminal, start the frontend:
+```bash
+cd frontend
+npm install  # first time only
+./start_frontend.sh
+# or manually: npm run dev
+```
+
+4. Open http://localhost:3000 and enter your API keys in Settings
+
+### Option 2: Streamlit Interface
+
+1. Place your newsletter PDFs in the `data/newsletters/` directory
+
+2. Install dependencies
+
+3. Run the app: `uv run streamlit run app/streamlit_app.py`
 
 ## Project Structure
 
 ```
 ai8-cert-challenge/
-├── school_events.ipynb    # Main notebook with event extraction logic
+├── app/
+│   ├── agent.py           # LangChain agent logic
+│   ├── api.py             # FastAPI backend (NEW)
+│   ├── cohere_rag.py      # Cohere reranking
+│   ├── data_processing.py # Event extraction
+│   ├── rag.py             # Vector search
+│   ├── streamlit_app.py   # Streamlit interface
+│   └── tools.py           # Agent tools
+├── frontend/              # React frontend (NEW)
+│   ├── app/
+│   │   ├── page.tsx       # Main chat interface
+│   │   └── layout.tsx     # App layout
+│   └── package.json       # Node dependencies
 ├── data/
 │   └── newsletters/       # Place your PDF newsletters here
-├── app/                   # Application code (future)
-├── pyproject.toml         # Project dependencies
+├── evaluation/            # RAGAS evaluation
+├── config.py              # Configuration
+├── requirements.txt       # Python dependencies
+├── DEPLOYMENT.md          # Deployment guide (NEW)
 └── README.md             # This file
 ```
 
 ## Dependencies
 
+### Backend (Python)
+- `fastapi` & `uvicorn` - API backend
 - `pypdf` - PDF text extraction
 - `python-dateutil` & `dateparser` - Date parsing
 - `pydantic` - Data validation
 - `openai` - AI-powered event extraction
-- `streamlit` - Web interface (future)
+- `cohere` - Reranking (optional)
+- `langchain` - Agent framework
+- `qdrant-client` - Vector database
+- `streamlit` - Alternative web interface
 - `tqdm` - Progress bars
+
+### Frontend (Node.js)
+- `next` - React framework
+- `react` - UI library
+- `tailwindcss` - Styling
+
+## Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions for:
+- Vercel (frontend & backend)
+- Railway (backend alternative)
+- Local development setup
 
 ## Timezone
 

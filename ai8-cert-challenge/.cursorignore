@@ -1,0 +1,22 @@
+# Frontend dependencies
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment
+.env
+.env.local
+
+# Vector DB
+qdrant_storage/
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+

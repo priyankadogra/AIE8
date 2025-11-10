@@ -1,0 +1,9 @@
+# Evaluation dependencies only
+# These require Python 3.12 or lower due to torch compatibility
+# Install with: uv pip install -r requirements-eval.txt
+
+sentence-transformers>=2.2.0
+ragas>=0.3.1
+datasets>=4.2.0
+evaluate>=0.4.6
+

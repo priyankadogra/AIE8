@@ -1,30 +1,31 @@
 # Core dependencies
 streamlit
-langchain
-langchain-openai
-langchain-community
-qdrant-client
-openai
-numpy
-pandas
-tqdm
+langchain==0.1.20
+langchain-openai==0.1.0
+langchain-community==0.0.38
+qdrant-client>=1.7.0
+openai>=1.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.65.0
+
+# API Backend
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.6
+cohere>=4.0.0
 
 # Data processing
-pypdf
-python-dateutil
-dateparser
-pydantic
-icalendar
+pypdf>=3.0.0
+python-dateutil>=2.8.0
+dateparser>=1.1.0
+pydantic>=2.0.0
+icalendar>=5.0.0
 
 # RAG and embeddings
-sentence-transformers
-faiss-cpu
-
-# Evaluation
-ragas
-datasets
-evaluate
+# Note: sentence-transformers is only needed for evaluation, not core functionality
+# If you need it, install separately: uv pip install sentence-transformers
+faiss-cpu>=1.7.0
 
 # Utilities
-python-dotenv
-pathlib
+python-dotenv>=1.0.0

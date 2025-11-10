@@ -78,3 +78,9 @@ uv.lock
 # Project specific
 *.log
 
+# Newsletter PDFs (users will upload their own)
+data/newsletters/*.pdf
+
+# Qdrant vector database
+qdrant_storage/
+
